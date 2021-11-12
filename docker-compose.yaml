@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+  mysqldb:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - $HOME/Desktop/MySQL-Snippets/school.sql:/school.sql
+    
+  server:
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+    image: mysql/mysql-server
+    depends_on:
+      - mysqldb
+    stdin_open: true
+    tty: true
+
+volumes:
+  db-config:
+  db-data:

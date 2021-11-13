@@ -8,8 +8,9 @@ services:
       MYSQL_DATABASE: test_db
     ports:
       - "3307:3306"
+    command: --init-file /docker-entrypoint-initdb.d/setup.sql
     volumes:
-      - $HOME/Desktop/MySQL-Snippets/school.sql:/school.sql
+      - .docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
     
   server:
     build:

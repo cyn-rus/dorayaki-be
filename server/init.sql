@@ -23,3 +23,10 @@ CREATE TABLE IF NOT EXISTS request_log (
     endpoint TEXT,
     timestamp TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS users (
+    username VARCHAR(50),
+    password VARCHAR(50),
+    email VARCHAR(64),
+    isadmin INT
+);

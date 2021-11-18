@@ -1,5 +1,8 @@
+var CryptoJS = require("crypto-js");
+
 function login(connection, response) {
-    connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [response.username, response.password], function(error, results) {
+    var encrypted = CryptoJS.AES.encrypt(response.password, "mahi-mahi").toString();
+    connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [response.username, encrypted], function(error, results) {
         if (error) throw error;
 
         responseStr = '';
@@ -13,10 +16,10 @@ function login(connection, response) {
             responstStr = 'No records found';
         
         console.log(responseStr);
-        res.status(200).send(responseStr);
+        results.status(200).send(responseStr);
     });
 
-    return responseStr
+    return responseStr;
 }
 
 module.exports = { login };

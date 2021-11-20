@@ -14,8 +14,9 @@ CREATE TABLE IF NOT EXISTS bahan_baku (
 );
 
 CREATE TABLE IF NOT EXISTS request (
-    ip TEXT,
-    endpoint TEXT,
+    nama_dorayaki VARCHAR(50),
+    jumlah INT,
+    status INT,
     timestamp TIMESTAMP
 );
 

@@ -1,10 +1,11 @@
-version: '3.1'
+version: '3.8'
+
 services:
   mysqldb:
     image: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: test_db
     ports:
       - "3307:3306"
@@ -17,6 +18,8 @@ services:
       context: .
       dockerfile: ./server/Dockerfile
     image: mysql/mysql-server
+    ports:
+      - "8005:8005"
     depends_on:
       - mysqldb
     stdin_open: true

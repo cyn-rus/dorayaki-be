@@ -28,7 +28,7 @@ connection.connect();
 
 app.get('/login', function(req,res) {
     console.log("test");
-    console.log(req.body.username);
+    console.log(res);
     // login.login(connection, response);
 });
 

@@ -1,12 +1,20 @@
 var mysql = require("mysql");
 var express = require("express");
-const login = require("./server/login");
-const register = require("./server/register");
+var login = require("./server/login.js")
+const register = require("./server/login");
 const { response } = require("express");
 
 var app = express();
 var port = process.env.PORT || 8005;
 var responseStr = "MySQL Data:";
+
+app.use(
+    express.urlencoded({
+        extended:true
+    })
+)
+
+app.use(express.json())
 
 var mysqlHost = process.env.MYSQL_HOST || 'localhost';
 var mysqlPort = process.env.MYSQL_PORT || '3307';
@@ -26,11 +34,10 @@ var connection = mysql.createConnection(connectionOptions);
 
 connection.connect();
 
-app.get('/login', function(req,res) {
-    console.log("test");
-    console.log("================================")
-    console.log(req.body);
-    // login.login(connection, response);
+app.post('/login', async function(req,res) {
+    var responseStr = await login.login(req.body);
+
+    res.json(JSON.parse(responseStr));
 });
 
 app.get('/register', function(req,res) {

@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS bahan_baku (
 );
 
 CREATE TABLE IF NOT EXISTS request (
+    request_name VARCHAR(50),
     nama_dorayaki VARCHAR(50),
     jumlah INT,
     status INT,

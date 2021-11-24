@@ -21,17 +21,14 @@ async function login(response) {
     var connection = mysql.createConnection(connectionOptions);
 
     connection.connect();
-    responseStr = "";
+    let responseStr = "";
     
     await(new Promise((resolve, _reject) => {
-        connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [response.username, encrypted], function(error, results) {
+        connection.query('SELECT username FROM users WHERE username = ? AND password = ?', [response.username, encrypted], function(error, results) {
             if (error) throw error;
 
-            responseStr += JSON.stringify(results[0]);
+            responseStr = results
 
-            if (responseStr.length == 0)
-                responseStr = 'No records found';
-            
             resolve();
         });
     }));

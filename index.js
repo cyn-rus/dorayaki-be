@@ -22,6 +22,7 @@ app.use(express.json())
 app.post('/login', async function(req,res) {
     var responseStr = await login.login(req.body);
 
+    console.log(responseStr);
     res.json(JSON.parse(responseStr));
 });
 

@@ -1,5 +1,32 @@
 var CryptoJS = require("crypto-js");
 var mysql = require("mysql");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+process.env.TOKEN_SECRET;
+
+function generateAccessToken(username) {
+    return jwt.sign(username, process.env.TOKEN_SECRET, {expiresIn:'1800s'});
+}
+
+function authenticateToken(req,res,next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401)
+
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, username) => {
+        console.log(err)
+
+        if (err) return res.sendStatus (403);
+
+        req.user = username;
+
+        next()
+    });
+}
 
 async function login(response) {
     var encrypted = CryptoJS.SHA1(response.password).toString();
@@ -22,15 +49,25 @@ async function login(response) {
 
     connection.connect();
     responseStr = "";
+    var token;
     
     await(new Promise((resolve, _reject) => {
         connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [response.username, encrypted], function(error, results) {
             if (error) throw error;
 
-            responseStr += JSON.stringify(results[0]);
+            response = results[0];
+
+            responseStr = JSON.stringify(response);
 
             if (responseStr.length == 0)
                 responseStr = 'No records found';
+            else {
+                token = generateAccessToken({username:responseStr.username});
+                
+                response["token"] = token;
+
+                responseStr = JSON.stringify(response);
+            }
             
             resolve();
         });

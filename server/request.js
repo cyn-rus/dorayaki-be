@@ -1,8 +1,8 @@
 var mysql = require("mysql");
 
 async function addRequest(response) {
-    var mysqlHost = process.env.MYSQL_HOST || 'localhost';
-    var mysqlPort = process.env.MYSQL_PORT || '3307';
+    var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
+    var mysqlPort = process.env.MYSQL_PORT || '3306';
     var mysqlUser = process.env.MYSQL_USER || 'root';
     var mysqlPass = process.env.MYSQL_PASS || 'password';
     var mysqlDB = process.env.MYSQL_DB     || 'pabrik_dorayaki';
@@ -37,8 +37,8 @@ async function addRequest(response) {
 }
 
 async function acceptRequest(response) {
-    var mysqlHost = process.env.MYSQL_HOST || 'localhost';
-    var mysqlPort = process.env.MYSQL_PORT || '3307';
+    var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
+    var mysqlPort = process.env.MYSQL_PORT || '3306';
     var mysqlUser = process.env.MYSQL_USER || 'root';
     var mysqlPass = process.env.MYSQL_PASS || 'password';
     var mysqlDB = process.env.MYSQL_DB     || 'pabrik_dorayaki';

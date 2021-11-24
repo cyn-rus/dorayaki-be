@@ -11,7 +11,9 @@ services:
       - "3307:3306"
     networks:
       - my_network
-    command: --init-file /docker-entrypoint-initdb.d/setup.sql
+    command: 
+      --init-file /docker-entrypoint-initdb.d/setup.sql
+      --default-authentication-plugin=mysql_native_password
     volumes:
       - .docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
     

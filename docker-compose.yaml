@@ -9,6 +9,8 @@ services:
       MYSQL_DATABASE: test_db
     ports:
       - "3307:3306"
+    networks:
+      - my_network
     command: --init-file /docker-entrypoint-initdb.d/setup.sql
     volumes:
       - .docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
@@ -16,15 +18,20 @@ services:
   server:
     build:
       context: .
-      dockerfile: ./server/Dockerfile
+      dockerfile: ./Dockerfile
     image: mysql/mysql-server
     ports:
       - "8005:8005"
+    networks:
+      - my_network
     depends_on:
       - mysqldb
     stdin_open: true
     tty: true
 
+networks:
+  my_network:
+    driver: bridge
 volumes:
   db-config:
   db-data:

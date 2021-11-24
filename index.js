@@ -6,11 +6,13 @@ var getresep = require("./server/getResep.js");
 var addresep = require("./server/addResep.js");
 var getbahanbaku = require("./server/getBahanBaku.js");
 var request = require("./server/request.js");
+const cors = require('cors')
 const { getBahanBaku } = require("./server/getBahanBaku.js");
 
 var app = express();
 var port = process.env.PORT || 8005;
 
+app.use(cors())
 app.use(
     express.urlencoded({
         extended:true
@@ -22,7 +24,7 @@ app.use(express.json())
 app.post('/login', async function(req,res) {
     var responseStr = await login.login(req.body);
 
-    res.json(JSON.parse(responseStr));
+    res.json(responseStr);
 });
 
 app.post('/register', async function(req,res) {

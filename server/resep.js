@@ -90,11 +90,11 @@ function parseResep(jsonResponse) {
                 "jumlah":${jumlah}
             }
             `
-            jsonResult[`"${namaResep}"`].push(JSON.parse(tmp));
+            jsonResult[namaResep].push(JSON.parse(tmp));
         } else {
             parsedResep.push(namaResep);
 
-            jsonResult[`"${namaResep}"`] = JSON.parse("[]");
+            jsonResult[namaResep] = JSON.parse("[]");
 
             let tmp = `
             {
@@ -102,26 +102,15 @@ function parseResep(jsonResponse) {
                 "jumlah" : ${jumlah}
             }`
 
-            jsonResult[`"${namaResep}"`].push(JSON.parse(tmp));
+            jsonResult[namaResep].push(JSON.parse(tmp));
         }
     }
-    return jsonResult;
-}
 
-`
-{
-    "nasi_goreng":[
-        {
-            nama_bahan : 
-            jumlah :
-        },
-        {
-            nama_bahan :
-            jumlah :
-        }
-    ]
+    var data = [];
+    data.push(jsonResult);
+
+    return data;
 }
-`
 
 async function getAllResep() {
     var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';

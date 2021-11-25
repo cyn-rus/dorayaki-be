@@ -38,6 +38,12 @@ app.post('/register', async function(req,res) {
     res.json(JSON.parse(responseStr));
 });
 
+app.get('/getResepNames', async function(req,res) {
+    var responseStr = await resep.getResepNames();
+
+    res.json(responseStr);
+});
+
 app.get('/getResep', async function(req,res) {
     var responseStr = await resep.getResep(req.body);
 

@@ -157,4 +157,46 @@ async function getAllResep() {
     return responseStr;
 }
 
-module.exports = { addResep, getResep, getAllResep };
+async function getResepNames() {
+    var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
+    var mysqlPort = process.env.MYSQL_PORT || '3306';
+    var mysqlUser = process.env.MYSQL_USER || 'root';
+    var mysqlPass = process.env.MYSQL_PASS || 'password';
+    var mysqlDB = process.env.MYSQL_DB     || 'pabrik_dorayaki';
+
+    var connectionOptions = {
+        host: mysqlHost,
+        port: mysqlPort,
+        user: mysqlUser,
+        password: mysqlPass,
+        database: mysqlDB
+    };
+
+    var connection = mysql.createConnection(connectionOptions);
+
+    connection.connect();
+    var responseStr;
+    var listNames = [];
+
+    await (new Promise((resolve, _reject) => {
+        connection.query('SELECT DISTINCT nama_resep FROM resep', function(error, results) {
+            if (error) throw error;
+
+            for (let i = 0; i < results.length; i++) {
+                var obj = results[i];
+
+                listNames.push(obj["nama_resep"]);
+            }
+
+            responseStr = JSON.stringify(results);
+
+            if (responseStr.length == 0)
+                responseStr = '[]';
+
+            resolve();
+        });
+    }));
+    return listNames;
+}
+
+module.exports = { addResep, getResep, getAllResep, getResepNames };

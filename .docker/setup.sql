@@ -14,10 +14,12 @@ CREATE TABLE IF NOT EXISTS bahan_baku (
 );
 
 CREATE TABLE IF NOT EXISTS request (
-    request_name VARCHAR(50),
+    request_name VARCHAR(255),
     nama_dorayaki VARCHAR(50),
     jumlah INT,
     status INT,
+    ip TEXT,
+    endpoint TEXT,
     timestamp TIMESTAMP
 );
 

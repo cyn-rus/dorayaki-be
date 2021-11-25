@@ -1,4 +1,5 @@
 var mysql = require("mysql");
+var nodemailer = require('nodemailer');
 
 async function addRequest(response) {
     var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
@@ -28,6 +29,29 @@ async function addRequest(response) {
                 console.log(error);
             }
             else success = 1;
+
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'mahimahitubes@gmail.com',
+                    pass: 'mahimahimahi'
+                }
+            });
+
+            var mailOptions = {
+                from: 'mahimahitubes@gmail.com',
+                to: 'kevinryanwijaya@gmail.com',
+                subject: 'New Dorayaki Request To Factory',
+                text: `A new request for ${response.jumlah} ${response.nama_dorayaki} was by someone with ip address ${response.ip} on ${response.timestamp}`
+            };
+
+            transporter.sendMail(mailOptions, function(error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
 
             resolve();
         });

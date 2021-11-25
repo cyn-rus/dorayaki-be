@@ -171,6 +171,41 @@ async function rejectRequest(response) {
     return success;
 }
 
+async function getStatus(response) {
+    var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
+    var mysqlPort = process.env.MYSQL_PORT || '3306';
+    var mysqlUser = process.env.MYSQL_USER || 'root';
+    var mysqlPass = process.env.MYSQL_PASS || 'password';
+    var mysqlDB = process.env.MYSQL_DB     || 'pabrik_dorayaki';
+
+    var connectionOptions = {
+        host: mysqlHost,
+        port: mysqlPort,
+        user: mysqlUser,
+        password: mysqlPass,
+        database: mysqlDB
+    };
+
+    var connection = mysql.createConnection(connectionOptions);
+
+    connection.connect();
+
+    var responseStr = "";
+
+    await(new Promise((resolve, _reject) => {
+        connection.query('SELECT status FROM request WHERE request_name=?', [response.request_name], function(error, results) {
+            if (error) console.log(error);
+            
+            responseStr = results[0].status;
+            
+
+            resolve();
+        });
+    }));
+
+    return responseStr;
+}
+
 async function acceptRequest(response) {
     var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
     var mysqlPort = process.env.MYSQL_PORT || '3306';
@@ -229,4 +264,4 @@ async function acceptRequest(response) {
     return success;
 }
 
-module.exports = { addRequest, acceptRequest, getAllRequest, getRequest, rejectRequest };
+module.exports = { getStatus, addRequest, acceptRequest, getAllRequest, getRequest, rejectRequest };

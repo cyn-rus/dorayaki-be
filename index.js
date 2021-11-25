@@ -96,7 +96,13 @@ app.get('/getRequest', async function(req,res) {
     var responseStr = await request.getRequest(req.body);
 
     res.json(JSON.parse(responseStr));
-}) 
+});
+
+app.get('/getStatus', async function(req,res) {
+    var responseStr = await request.getStatus(req.body);
+
+    res.json(responseStr);
+});
 
 app.post('/addRequest', async function(req,res) {
     var responseStr = await request.addRequest(req.body);

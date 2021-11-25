@@ -1,3 +1,9 @@
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+flush privileges;
+
+ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'password';
+flush privileges;
+
 CREATE DATABASE IF NOT EXISTS pabrik_dorayaki;
 
 USE pabrik_dorayaki;

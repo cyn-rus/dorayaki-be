@@ -95,11 +95,12 @@ async function acceptRequest(response) {
 
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
-    const threshold = 2;
+    var condition_timestamp = timestamp - 1 * 60000;
+    const threshold = 1;
     var success;
 
     await(new Promise((resolve, _reject) => {
-        connection.query('SELECT COUNT(*) AS logCount FROM request_log WHERE ip=? AND endpoint=? AND timestamp>(?-?)', [response.ip,response.endpoint,timestamp-(timestamp-response.timestamp)], function(error, results) {
+        connection.query('SELECT COUNT(*) AS logCount FROM request_log WHERE ip=? AND endpoint=? AND timestamp>?', [response.ip,response.endpoint,condition_timestamp], function(error, results) {
             if (error) throw error
             else {
                 if(results[0].logCount < threshold) {
@@ -107,18 +108,17 @@ async function acceptRequest(response) {
                         connection.query('INSERT INTO request_log VALUES (?,?,?)', [response.ip,response.endpoint,response.timestamp], function(error2, results2) {
                             if (error2) throw error2
                             else {
-                                console.log("request added to log");
+                                console.log("request successfully added to log");
+                                connection.query("UPDATE request SET status=420 WHERE nama_request = ?", [response.nama_request], function(error3, results3){
+                                    if (error3) throw error3
+                                    else {
+                                        console.log("status changed to 420");
+                                    }
+                                });
                             }
-                            resolve();
                         });
-                        connection.query("UPDATE request SET status=420 WHERE nama_request = ?", [response.nama_request], function(error2, results2){
-                            if (error2) throw error2
-                            else {
-                                console.log("status changed to 420");
-                            }
-                        })
-                        success = 1;
                     }));
+                    success = 1;
                     resolve();
                 } else {
                     console.log("request log is full");

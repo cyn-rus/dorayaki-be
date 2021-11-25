@@ -55,8 +55,10 @@ async function login(response) {
             if (error) throw error;
 
             if (results.length !== 0) {
-                const token = generateAccessToken({ username: results[0].username })
-                res.push({'token': token})
+                const resJSON = results[0]
+                const token = generateAccessToken({ username: resJSON.username })
+                resJSON['token'] = token
+                res.push(resJSON)
             }
 
             resolve();

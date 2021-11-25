@@ -22,7 +22,7 @@ async function addBahanBaku(response) {
 
     var success;
     await(new Promise((resolve, _reject) => {
-        connection.query('INSERT INTO bahan_baku VALUES (?,?)', [response.nama_bahan,response.jumlah], function(error, results){
+        connection.query('INSERT INTO bahan_baku VALUES (?,?)', [response.nama_bahan,response.stok], function(error, results){
             if (error) {
                 success = 0;
                 console.log(error);

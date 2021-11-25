@@ -98,7 +98,7 @@ app.get('/getRequest', async function(req,res) {
     res.json(JSON.parse(responseStr));
 });
 
-app.get('/getStatus', async function(req,res) {
+app.post('/getStatus', async function(req,res) {
     var responseStr = await request.getStatus(req.body);
 
     res.json(responseStr);

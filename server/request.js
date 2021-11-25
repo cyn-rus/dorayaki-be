@@ -95,21 +95,22 @@ async function acceptRequest(response) {
 
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
-    var condition_timestamp = timestamp - 1 * 60000;
+    var current_timestamp = new Date(timestamp + (420*60000));
+    var condition_timestamp = new Date(timestamp + (420*60000) - (1*60000));
+    console.log(condition_timestamp);
     const threshold = 1;
     var success;
 
     await(new Promise((resolve, _reject) => {
-        connection.query('SELECT COUNT(*) AS logCount FROM request_log WHERE ip=? AND endpoint=? AND timestamp>?', [response.ip,response.endpoint,condition_timestamp], function(error, results) {
+        connection.query('SELECT COUNT(*) AS logCount FROM request_log WHERE ip=? AND endpoint=? AND timestamp > ?', [response.ip,response.endpoint,condition_timestamp], function(error, results) {
             if (error) throw error
             else {
                 if(results[0].logCount < threshold) {
-                    await(new Promise((resolve, _reject) => {
-                        connection.query('INSERT INTO request_log VALUES (?,?,?)', [response.ip,response.endpoint,response.timestamp], function(error2, results2) {
+                        connection.query('INSERT INTO request_log VALUES (?,?,?)', [response.ip,response.endpoint,current_timestamp], function(error2, results2) {
                             if (error2) throw error2
                             else {
                                 console.log("request successfully added to log");
-                                connection.query("UPDATE request SET status=420 WHERE nama_request = ?", [response.nama_request], function(error3, results3){
+                                connection.query("UPDATE request SET status=420 WHERE request_name = ?", [response.request_name], function(error3, results3){
                                     if (error3) throw error3
                                     else {
                                         console.log("status changed to 420");
@@ -117,7 +118,6 @@ async function acceptRequest(response) {
                                 });
                             }
                         });
-                    }));
                     success = 1;
                     resolve();
                 } else {

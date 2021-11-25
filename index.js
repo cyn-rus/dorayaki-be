@@ -2,8 +2,7 @@ var mysql = require("mysql");
 var express = require("express");
 var login = require("./server/login.js")
 var register = require("./server/register.js");
-var getresep = require("./server/getResep.js");
-var addresep = require("./server/addResep.js");
+var resep = require("./server/resep.js");
 var getbahanbaku = require("./server/getBahanBaku.js");
 var request = require("./server/request.js");
 const cors = require('cors')
@@ -34,16 +33,22 @@ app.post('/register', async function(req,res) {
 });
 
 app.get('/getResep', async function(req,res) {
-    var responseStr = await getresep.getResep(req.body);
+    var responseStr = await resep.getResep(req.body);
 
     res.json(JSON.parse(responseStr));
 });
 
 app.post('/addResep', async function(req,res) {
-    var responseStr = await addresep.addResep(req.body);
+    var responseStr = await resep.addResep(req.body);
 
     res.json(JSON.parse(responseStr));
 });
+
+app.get('/getAllResep', async function(req,res) {
+    var responseStr = await resep.getAllResep(req.body);
+
+    res.json(JSON.parse(responseStr));
+})
 
 app.get('/getBahanBaku', async function(req,res) {
     var responseStr = await getbahanbaku.getBahanBaku(req.body);

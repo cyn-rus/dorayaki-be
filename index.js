@@ -48,6 +48,12 @@ app.get('/getAllResep', async function(req,res) {
     var responseStr = await resep.getAllResep(req.body);
 
     res.json(JSON.parse(responseStr));
+});
+
+app.post('/addBahanBaku', async function(req,res) {
+    var responseStr = await bahanbaku.addBahanBaku(req.body);
+
+    res.json(JSON.parse(responseStr));
 })
 
 app.get('/getBahanBaku', async function(req,res) {

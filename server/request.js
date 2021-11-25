@@ -120,8 +120,8 @@ async function getRequest(response) {
     var responseStr;
 
     await (new Promise((resolve, _reject) => {
-        connection.query('SELECT * FROM request WHERE request_name = ?', [response.request_name], function(results, error) {
-            if (error) console.log(error);
+        connection.query('SELECT * FROM request WHERE request_name = ?', [response.request_name], function(error, results) {
+            if (error) throw error;
 
             responseStr = JSON.stringify(results);
 

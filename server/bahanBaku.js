@@ -36,6 +36,42 @@ async function getBahanBaku(response) {
     return responseStr;
 }
 
+async function editBahanBaku(response) {
+    var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
+    var mysqlPort = process.env.MYSQL_PORT || '3306';
+    var mysqlUser = process.env.MYSQL_USER || 'root';
+    var mysqlPass = process.env.MYSQL_PASS || 'password';
+    var mysqlDB = process.env.MYSQL_DB     || 'pabrik_dorayaki';
+
+    var connectionOptions = {
+        host: mysqlHost,
+        port: mysqlPort,
+        user: mysqlUser,
+        password: mysqlPass,
+        database: mysqlDB
+    };
+
+    var connection = mysql.createConnection(connectionOptions);
+
+    connection.connect();
+
+    var success;
+
+    await(new Promise((resolve, _reject) => {
+        connection.query('UPDATE bahan_baku SET nama_bahan=?, stok=? WHERE nama_bahan=?',[response.new_nama_bahan,response.new_stok,response.nama_bahan], function(error, results) {
+            if (error) {
+                success = 0;
+                console.log(error);
+            }
+            else {
+                success = 1;
+            }
+            resolve();
+        });
+    }));
+    return success;
+}
+
 async function getAllBahanBaku() {
     var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
     var mysqlPort = process.env.MYSQL_PORT || '3306';
@@ -71,4 +107,4 @@ async function getAllBahanBaku() {
     return responseStr;
 }
 
-module.exports = { getBahanBaku, getAllBahanBaku };
+module.exports = { getBahanBaku, getAllBahanBaku, editBahanBaku };

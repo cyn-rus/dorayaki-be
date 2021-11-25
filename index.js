@@ -62,6 +62,12 @@ app.get('/getAllBahanBaku', async function(req,res) {
     res.json(JSON.parse(responseStr));
 });
 
+app.post('/editBahanBaku', async function(req,res) {
+    var responseStr = await bahanbaku.editBahanBaku(req.body);
+
+    res.json(JSON.parse(responseStr));
+});
+
 app.post('/addRequest', async function(req,res) {
     var responseStr = await request.addRequest(req.body);
 

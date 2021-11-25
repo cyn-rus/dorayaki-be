@@ -63,7 +63,7 @@ async function getResep(response) {
             responseStr = JSON.stringify(results);
 
             if (responseStr.length == 0)
-                responseStr = 'No records found';
+                responseStr = '[]';
 
             resolve();
         });
@@ -148,7 +148,7 @@ async function getAllResep() {
             responseStr = JSON.stringify(parseResep(results));
 
             if (responseStr.length == 0)
-                responseStr = 'No records found';
+                responseStr = '[]';
 
             resolve();
         });

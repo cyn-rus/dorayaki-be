@@ -62,7 +62,7 @@ async function getBahanBaku(response) {
             responseStr = JSON.stringify(results[0]);
 
             if (responseStr.length == 0)
-                responseStr = 'No records found';
+                responseStr = '[]';
 
             resolve();
         });
@@ -133,7 +133,7 @@ async function getAllBahanBaku() {
             responseStr = JSON.stringify(results);
 
             if (responseStr.length == 0)
-                responseStr = 'No records found';
+                responseStr = '[]';
             
             resolve();
         });

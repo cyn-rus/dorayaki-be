@@ -193,4 +193,4 @@ async function acceptRequest(response) {
     return success;
 }
 
-module.exports = { addRequest, acceptRequest, getAllRequest };
+module.exports = { addRequest, acceptRequest, getAllRequest, getRequest };

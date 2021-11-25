@@ -73,47 +73,52 @@ async function getResep(response) {
 }
 
 function parseResep(jsonResponse) {
-    if (jsonResponse.length != 0) {
-        jsonResult = JSON.parse("{}");
-        parsedResep = [];
+    var jsonResult = JSON.parse("[]");
+    parsedResep = [];
 
-        for (var i = 0; i < jsonResponse.length; i++) {
-            var obj = jsonResponse[i];
-            namaResep = obj["nama_resep"];
-            namaBahan = obj["nama_bahan"];
-            jumlah = obj["jumlah"];
+    for (var i = 0; i < jsonResponse.length; i++) {
+        var obj = jsonResponse[i];
+        namaResep = obj["nama_resep"];
+        namaBahan = obj["nama_bahan"];
+        jumlah = obj["jumlah"];
 
-            if (parsedResep.includes(namaResep)) {
-                let tmp = 
-                `
+        if (!parsedResep.includes(namaResep)) {
+            parsedResep.push(namaResep);
+
+            let tmp = `
+            {
+                "nama_resep":"${namaResep}",
+                "data_bahan": [
+                    {
+                        "nama_bahan":"${namaBahan}",
+                        "jumlah":${jumlah}
+                    }
+                ]
+            }
+            `
+            jsonResult.push(JSON.parse(tmp));
+
+        } else {
+            for (var j = 0; j < jsonResult.length; j++) {
+                var tmpObj = jsonResult[j];
+                console.log(jsonResult);
+                
+                let tmp2 = `
                 {
                     "nama_bahan":"${namaBahan}",
                     "jumlah":${jumlah}
                 }
                 `
-                jsonResult[namaResep].push(JSON.parse(tmp));
-            } else {
-                parsedResep.push(namaResep);
 
-                jsonResult[namaResep] = JSON.parse("[]");
-
-                let tmp = `
-                {
-                    "nama_bahan" : "${namaBahan}",
-                    "jumlah" : ${jumlah}
-                }`
-
-                jsonResult[namaResep].push(JSON.parse(tmp));
+                if (tmpObj["nama_resep"] == namaResep) {
+                    console.log(JSON.parse(tmp2));
+                    tmpObj["data_bahan"].push(JSON.parse(tmp2));
+                }
             }
         }
-    } else {
-        return JSON.parse("[]");
     }
 
-    var data = [];
-    data.push(jsonResult);
-
-    return data;
+    return jsonResult;
 }
 
 async function getAllResep() {

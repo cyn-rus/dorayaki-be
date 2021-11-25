@@ -20,6 +20,12 @@ app.use(
 
 app.use(express.json())
 
+const auth = require("./server/auth");
+
+app.post("/authenticate", auth, (req,res) => {
+    res.status(200).send("mahi-mahi best fish");
+});
+
 app.post('/login', async function(req,res) {
     var responseStr = await login.login(req.body);
 

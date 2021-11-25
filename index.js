@@ -98,6 +98,12 @@ app.post('/addRequest', async function(req,res) {
     res.json(JSON.parse(responseStr));
 });
 
+app.post('/rejectRequest', async function(req,res) {
+    var responseStr = await request.rejectRequest(req.body);
+
+    res.json(JSON.parse(responseStr));
+});
+
 app.get('/getAllRequest', async function(req,res) {
     var responseStr = await request.getAllRequest(req.body);
 

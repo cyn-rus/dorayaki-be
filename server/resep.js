@@ -73,37 +73,41 @@ async function getResep(response) {
 }
 
 function parseResep(jsonResponse) {
-    jsonResult = JSON.parse("{}");
-    parsedResep = [];
+    if (jsonResponse.length != 0) {
+        jsonResult = JSON.parse("{}");
+        parsedResep = [];
 
-    for (var i = 0; i < jsonResponse.length; i++) {
-        var obj = jsonResponse[i];
-        namaResep = obj["nama_resep"];
-        namaBahan = obj["nama_bahan"];
-        jumlah = obj["jumlah"];
+        for (var i = 0; i < jsonResponse.length; i++) {
+            var obj = jsonResponse[i];
+            namaResep = obj["nama_resep"];
+            namaBahan = obj["nama_bahan"];
+            jumlah = obj["jumlah"];
 
-        if (parsedResep.includes(namaResep)) {
-            let tmp = 
-            `
-            {
-                "nama_bahan":"${namaBahan}",
-                "jumlah":${jumlah}
+            if (parsedResep.includes(namaResep)) {
+                let tmp = 
+                `
+                {
+                    "nama_bahan":"${namaBahan}",
+                    "jumlah":${jumlah}
+                }
+                `
+                jsonResult[namaResep].push(JSON.parse(tmp));
+            } else {
+                parsedResep.push(namaResep);
+
+                jsonResult[namaResep] = JSON.parse("[]");
+
+                let tmp = `
+                {
+                    "nama_bahan" : "${namaBahan}",
+                    "jumlah" : ${jumlah}
+                }`
+
+                jsonResult[namaResep].push(JSON.parse(tmp));
             }
-            `
-            jsonResult[namaResep].push(JSON.parse(tmp));
-        } else {
-            parsedResep.push(namaResep);
-
-            jsonResult[namaResep] = JSON.parse("[]");
-
-            let tmp = `
-            {
-                "nama_bahan" : "${namaBahan}",
-                "jumlah" : ${jumlah}
-            }`
-
-            jsonResult[namaResep].push(JSON.parse(tmp));
         }
+    } else {
+        return JSON.parse("[]");
     }
 
     var data = [];

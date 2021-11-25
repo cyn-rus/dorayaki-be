@@ -74,6 +74,12 @@ app.get('/getAllBahanBaku', async function(req,res) {
     res.json(JSON.parse(responseStr));
 });
 
+app.get('/getAllBahanBakuNames', async function(req,res) {
+    var responseStr = await bahanbaku.getAllBahanBakuNames();
+
+    res.json(JSON.parse(responseStr));
+})
+
 app.post('/editBahanBaku', async function(req,res) {
     var responseStr = await bahanbaku.editBahanBaku(req.body);
 

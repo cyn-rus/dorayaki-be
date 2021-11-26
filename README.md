@@ -61,8 +61,8 @@ Full reference can be accessed at : https://docs.google.com/document/d/1SFEuuYtS
 REST
 Backend :
   - jwt authentication : 13519191
-  - login and generate token : 13519191
-  - register & encryption : 13519191
+  - login and generate token : 13519015, 13519191
+  - register & encryption : 13519118, 13519191
   - add bahan baku, get bahan baku & variations, edit bahan baku : 13519191
   - add request, get requests : 13519191
   - accept requests + rate limiter and reject requests : 13519191

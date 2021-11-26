@@ -171,7 +171,7 @@ async function rejectRequest(response) {
     return success;
 }
 
-async function getStatus(response) {
+async function getStatus() {
     var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
     var mysqlPort = process.env.MYSQL_PORT || '3306';
     var mysqlUser = process.env.MYSQL_USER || 'root';
@@ -193,11 +193,16 @@ async function getStatus(response) {
     var responseStr = "";
 
     await(new Promise((resolve, _reject) => {
-        connection.query('SELECT status FROM request WHERE request_name=?', [response.request_name], function(error, results) {
+        connection.query('SELECT request_name, status FROM request', function(error, results) {
             if (error) console.log(error);
+
+            console.log(results);
             
-            responseStr = results[0].status;
-            
+            responseStr = JSON.stringify(results);
+
+            if (responseStr.length == 0) {
+                responseStr = "[]";
+            }
 
             resolve();
         });
